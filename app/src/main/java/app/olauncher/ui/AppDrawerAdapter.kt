@@ -154,7 +154,15 @@ class AppDrawerAdapter(
                 otherProfileIndicator.isVisible = appModel.user != myUserHandle
 
                 appTitle.setOnClickListener { clickListener(appModel) }
-                appTitle.setOnLongClickListener {
+                appTitle.setOnClickListener {
+                    withClickHapticFeedback(
+                        itemView,
+                        listener(appModel)
+                    )
+                }
+		appTitle.setOnLongClickListener {
+                    itemView.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+                    appHideLayout.visibility = View.VISIBLE
                     if (appModel.appPackage.isNotEmpty()) {
                         appDelete.alpha = if (root.context.isSystemApp(appModel.appPackage)) 0.5f else 1.0f
                         appHide.text = if (flag == Constants.FLAG_HIDDEN_APPS)
@@ -195,9 +203,20 @@ class AppDrawerAdapter(
                     }
                 }
                 appInfo.setOnClickListener { appInfoListener(appModel) }
-                appDelete.setOnClickListener { appDeleteListener(appModel) }
+		appInfo.setOnClickListener {
+                    withClickHapticFeedback(
+                        itemView,
+                        appInfoListener(appModel)
+                    )
+                }                
+		appDelete.setOnClickListener { appDeleteListener(appModel) }
                 appHideLayout.setOnClickListener { appHideLayout.visibility = View.GONE }
                 appHide.setOnClickListener { appHideListener(appModel, bindingAdapterPosition) }
             }
+
+        private fun withClickHapticFeedback(view: View, listener: Unit) {
+            view.performHapticFeedback(HapticFeedbackConstants.CONTEXT_CLICK)
+            return listener
+        }
     }
 }
