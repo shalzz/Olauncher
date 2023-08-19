@@ -1,6 +1,7 @@
 package app.olauncher.ui
 
 import android.os.UserHandle
+import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -157,7 +158,7 @@ class AppDrawerAdapter(
                 appTitle.setOnClickListener {
                     withClickHapticFeedback(
                         itemView,
-                        listener(appModel)
+                        clickListener(appModel)
                     )
                 }
 		appTitle.setOnLongClickListener {
